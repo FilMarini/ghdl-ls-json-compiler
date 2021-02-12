@@ -1,22 +1,23 @@
 import json
 
+files = []
+files.append("file1")
+files.append("file2")
+
 
 data = {}
 
 data['files'] = []
-data['files'].append({
-    'file1': 'ciao'
-})
-data['files'].append({
-    'file2': 'ciao2'
-})
+for filename in files:
+    data['files'].append({
+        'language': 'vhdl', 'file': filename
+    })
 
-data2 = {}
-data2['options'] = {}
-data2['options']['ghdl_analysis'] = []
-data2['options']['ghdl_analysis'].append('--workdir=work')
-data2['options']['ghdl_analysis'].append('--ieee=synopsys')
-data2['options']['ghdl_analysis'].append('-fexplicit')
+data['options'] = {}
+data['options']['ghdl_analysis'] = []
+data['options']['ghdl_analysis'].append('--workdir=work')
+data['options']['ghdl_analysis'].append('--ieee=synopsys')
+data['options']['ghdl_analysis'].append('-fexplicit')
 
 
 with open('data.json', 'w') as outfile:
