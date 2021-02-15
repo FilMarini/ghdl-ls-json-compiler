@@ -1,25 +1,38 @@
-import json
 import os
 import itertools
+import argparse
+
 
 def getListOfDir(dirname):
-    l = []
+    listDirs = []
     for root, dirs, files in os.walk('.'):
         if any(file.endswith('.vhd') for file in files):
-            l.append(os.path.abspath(root))
-    return l
+            listDirs.append(os.path.abspath(root))
+    return listDirs
+
 
 def main():
 
-    dirName = '.';
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-r", action='store', dest='root_proj',
+                        help='path to the root project')
+    results = parser.parse_args()
+
+    dirName = results.root_proj
+
+    prjName = os.path.basename(os.path.normpath(results.root_proj))
+    fileName = "VHDL-Project"
 
     # Get the list of all files directories with .vhd files
     listOfDir = getListOfDir(dirName)
 
-    #create prj file
-    with open('name.prj', 'w') as p:
-        #set proj name
-        p.write('(setq vhdl-project "Example")\n')
+    # Create prj file
+    with open(results.root_proj + "/" + fileName + '.prj', 'w') as p:
+        # Set proj name
+        # p.write('(setq vhdl-project "Example")\n')
+        p.write('(setq vhdl-project "')
+        p.write(prjName)
+        p.write('")\n')
         p.write("(vhdl-aput 'vhdl-project-alist vhdl-project\n")
         p.write("'")
         p.write('("Source files in two directories, custom library name, VHDL')
@@ -45,4 +58,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

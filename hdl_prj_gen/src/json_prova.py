@@ -1,6 +1,8 @@
 import json
 import os
+import argparse
 import itertools
+
 
 def def_ext(x):
     return {
@@ -9,6 +11,7 @@ def def_ext(x):
         ".v": "verilog",
         ".sv": "systemverilog"
     }.get(x)
+
 
 def getListOfFiles(dirName):
     # create a list of file and sub directories
@@ -32,6 +35,7 @@ def getListOfFiles(dirName):
             allExt.append(def_ext(file_extension))
     return allFiles, allExt
 
+
 def createJson(files, exts):
     data = {}
 
@@ -51,17 +55,20 @@ def createJson(files, exts):
 
 def main():
 
-    dirName = '.';
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-r", action='store', dest='root_proj',
+                        help='path to the root project')
+    results = parser.parse_args()
+    dirName = results.root_proj
 
     # Get the list of all files in directory tree at given path
     listOfFiles, listOfExt = getListOfFiles(dirName)
     hdl_prj = createJson(listOfFiles, listOfExt)
 
-    #output the json
-    with open('hdl-prj.json', 'w') as outfile:
+    # Output the json
+    with open(results.root_proj + '/hdl-prj.json', 'w') as outfile:
         json.dump(hdl_prj, outfile)
 
 
 if __name__ == '__main__':
     main()
-
