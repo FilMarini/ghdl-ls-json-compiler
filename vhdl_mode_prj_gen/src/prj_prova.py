@@ -40,7 +40,7 @@ def main():
         p.write('  ("Synopsys" "-vhdl87 \\\\2" "-f \\\\1 top_level"\n')
         p.write('   ((".*/datapath/.*" . "-optimize \\\\3")\n')
         p.write('    (".*_tb\\\\.vhd"))))\n')
-        p.write(' "lib/" "example3_lib" "lib/example3/" "Makefile_\\\\2" ""))')
+        p.write(' "lib/" "work" "lib/example3/" "Makefile_\\\\2" ""))')
 
 
 if __name__ == '__main__':
