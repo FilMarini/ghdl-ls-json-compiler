@@ -32,7 +32,7 @@ def main():
             p.write("\n")
             p.write('"')
             p.write(direc)
-            p.write('"')
+            p.write('/"')
         p.write(')')
         p.write("\n")
         p.write(' ""\n')
