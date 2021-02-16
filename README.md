@@ -9,3 +9,14 @@ vhdl_mode_prj_gen
 -----------------
 
 Python script to automatically generate the `<name>.prj` file for the emacs vhdl-mode
+
+Install
+-------
+
+To install both script run `make`
+
+If you wish to install only one, enter the directory and follows instructions
+
+**Dependencies**
+
+You need `pip` installed
