@@ -67,7 +67,7 @@ def main():
 
     # Output the json
     with open(results.root_proj + '/hdl-prj.json', 'w') as outfile:
-        json.dump(hdl_prj, outfile)
+        json.dump(hdl_prj, outfile, indent=4, sort_keys=True)
 
 
 if __name__ == '__main__':
