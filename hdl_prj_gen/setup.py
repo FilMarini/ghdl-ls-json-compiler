@@ -18,7 +18,7 @@ setuptools.setup(
     #],
     entry_points={
         'console_scripts': [
-            'hdl-prj-gen=src.json_prova:main'
+            'hdl-prj-gen=src.hdl_prj_gen:main'
         ]
     },
     classifiers=[

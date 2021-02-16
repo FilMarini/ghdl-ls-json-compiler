@@ -18,7 +18,7 @@ setuptools.setup(
     #],
     entry_points={
         'console_scripts': [
-            'vhdl-mode-prj-gen=src.prj_prova:main'
+            'vhdl-mode-prj-gen=src.vhdl_mode_prj_gen:main'
         ]
     },
     classifiers=[
