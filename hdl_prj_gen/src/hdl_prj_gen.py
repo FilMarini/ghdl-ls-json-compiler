@@ -30,7 +30,7 @@ def getListOfFiles(dirName):
         if os.path.isdir(fullPath):
             allFiles = allFiles + getListOfFiles(fullPath)[0]
             allExt = allExt + getListOfFiles(fullPath)[1]
-        elif file_extension in extList:
+        elif (file_extension in extList) and not (os.path.islink(fullPath)):
             allFiles.append(fullPath)
             allExt.append(def_ext(file_extension))
     return allFiles, allExt
@@ -63,6 +63,8 @@ def main():
 
     # Get the list of all files in directory tree at given path
     listOfFiles, listOfExt = getListOfFiles(dirName)
+    # for item in listOfFiles:
+    # print(os.path.basename(item))
     hdl_prj = createJson(listOfFiles, listOfExt)
 
     # Output the json
