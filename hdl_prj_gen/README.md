@@ -7,4 +7,4 @@ Usage
 
 * To create the executable run `pip install .`
 * Make sure the executable is in your `PATH`
-* to run type `hdl-prj-gen -r <path/to/root/folder/of/your/vhdl/project>`
+* to run type `hdl-prj-gen -r path/to/root/folder/of/your/vhdl/project`
