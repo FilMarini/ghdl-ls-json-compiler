@@ -1,4 +1,4 @@
-proc vhdlmode-prj-gen {out_path project} {
+proc vhdlmode-prj-gen {out_path project {use_abs_path True} } {
 
     set prj "\(setq vhdl-project \"$project\"\)\n\n"
     set prj "${prj}\(vhdl-aput 'vhdl-project-alist vhdl-project\n"
@@ -17,6 +17,10 @@ proc vhdlmode-prj-gen {out_path project} {
     }
 
     foreach el $synth_list {
+        # Use relative path if wanted
+        if { [string equal $use_abs_path False] } {
+            set el [string map "[file normalize ${out_path}] ." $el]
+        }
         set prj "${prj}  \"$el\"\n"
     }
 

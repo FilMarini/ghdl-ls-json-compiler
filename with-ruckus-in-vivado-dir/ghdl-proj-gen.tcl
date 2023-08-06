@@ -1,4 +1,4 @@
-proc ghdl-ls-prj-gen {out_path} {
+proc ghdl-ls-prj-gen {out_path {use_abs_path True} } {
     # Check if VHDL 2008 is used in project
     set vhdl_2008 0
     if {[lsearch -exact [get_property FILE_TYPE [get_files -used_in synthesis -compile_order sources]] {VHDL 2008}] >= 0} {
@@ -27,7 +27,7 @@ proc ghdl-ls-prj-gen {out_path} {
     # And merge them
     foreach el $sim_list {
         if {[lsearch -exact $synth_list $el] < 0} {
-            lappend synth_list $el
+           lappend synth_list $el
         }
     }
 
@@ -48,6 +48,10 @@ proc ghdl-ls-prj-gen {out_path} {
             set file_type systemverilog
         } elseif {[string equal $extension .dcp]} {
             set file_type dcp
+        }
+        # Use relative path if wanted
+        if { [string equal $use_abs_path False] } {
+            set el [string map "[file normalize ${out_path}] ." $el]
         }
         # Set file info
         if {$i < [llength $synth_list] - 1} {
