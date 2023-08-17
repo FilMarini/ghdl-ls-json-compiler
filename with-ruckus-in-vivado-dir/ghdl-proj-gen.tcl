@@ -1,4 +1,10 @@
-proc ghdl-ls-prj-gen {out_path {use_abs_path True} } {
+proc ghdl-ls-prj-gen {out_path args} {
+    # Get args default values
+    set defaults {-use_abs_path False -include_path None}
+    # Merge args
+    set params [dict merge $defaults $args]
+    # Extract the variables I car about
+    dict update params -use_abs_path use_abs_path -include_path include_path {}
     # Check if VHDL 2008 is used in project
     set vhdl_2008 0
     if {[lsearch -exact [get_property FILE_TYPE [get_files -used_in synthesis -compile_order sources]] {VHDL 2008}] >= 0} {
@@ -14,6 +20,9 @@ proc ghdl-ls-prj-gen {out_path {use_abs_path True} } {
     set ghdl_opt "${ghdl_opt}\t\t\"ghdl_analysis\": \[\n"
     if {$vhdl_2008 == 1} {
         set ghdl_opt "${ghdl_opt}\t\t\t\"--std=08\",\n"
+    }
+    if {$include_path != "None"} {
+        set ghdl_opt "${ghdl_opt}\t\t\t\"-P$include_path\",\n"
     }
     set ghdl_opt "${ghdl_opt}\t\t\t\"--ieee=synopsys\",\n"
     set ghdl_opt "${ghdl_opt}\t\t\t\"-fexplicit\"\n"
@@ -36,7 +45,8 @@ proc ghdl-ls-prj-gen {out_path {use_abs_path True} } {
     for { set i 0 } { $i < [llength $synth_list] } { incr i } {
         set el [lindex $synth_list $i]
         # Get Library
-        set file_library [get_property LIBRARY [get_files $el]]
+        set file_library "unknown"
+        set file_library [get_property -quiet LIBRARY [get_files -quiet $el]]
         # Get File type
         set file_type "unknown"
         set extension [file extension $el]
