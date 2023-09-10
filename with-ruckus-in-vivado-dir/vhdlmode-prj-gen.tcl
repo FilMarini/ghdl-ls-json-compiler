@@ -2,7 +2,7 @@ proc vhdlmode-prj-gen {out_path project {use_abs_path False} } {
 
     set prj "\(setq vhdl-project \"$project\"\)\n\n"
     set prj "${prj}\(vhdl-aput 'vhdl-project-alist vhdl-project\n"
-    set prj "${prj}\'\(\"Individual source files, multiple compilers in different directories\" \"[file normalize ${out_path}]\"\n"
+    set prj "${prj}\'\(\"Individual source files, multiple compilers in different directories\" \"[file normalize ${out_path}]/\"\n"
     set prj "${prj} \(\n"
 
     # Get set of files used in synthesis
