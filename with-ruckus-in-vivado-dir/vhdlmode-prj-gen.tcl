@@ -1,4 +1,10 @@
-proc vhdlmode-prj-gen {out_path project {use_abs_path False} } {
+proc vhdlmode-prj-gen {out_path args} {
+    # Get args default values
+    set defaults {-project None -use_abs_path False -include_sim True}
+    # Merge args
+    set params [dict merge $defaults $args]
+    # Extract the variables I car about
+    dict update params -project project -use_abs_path use_abs_path -include_sim include_sim {}
 
     set prj "\(setq vhdl-project \"$project\"\)\n\n"
     set prj "${prj}\(vhdl-aput 'vhdl-project-alist vhdl-project\n"
@@ -7,12 +13,14 @@ proc vhdlmode-prj-gen {out_path project {use_abs_path False} } {
 
     # Get set of files used in synthesis
     set synth_list [get_files -compile_order sources -used_in synthesis]
-    # Get set of files used in simulation
-    set sim_list [get_files -compile_order sources -used_in simulation]
-    # And merge them
-    foreach el $sim_list {
-        if {[lsearch -exact $synth_list $el] < 0} {
-            lappend synth_list $el
+    if { [string equal $include_sim True] } {
+        # Get set of files used in simulation
+        set sim_list [get_files -compile_order sources -used_in simulation]
+        # And merge them
+        foreach el $sim_list {
+            if {[lsearch -exact $synth_list $el] < 0} {
+                lappend synth_list $el
+            }
         }
     }
 

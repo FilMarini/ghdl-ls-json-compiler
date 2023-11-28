@@ -1,17 +1,19 @@
 proc ghdl-ls-prj-gen {out_path args} {
     # Get args default values
-    set defaults {-use_abs_path False -include_path None}
+    set defaults {-use_abs_path False -include_path None -include_sim True}
     # Merge args
     set params [dict merge $defaults $args]
     # Extract the variables I car about
-    dict update params -use_abs_path use_abs_path -include_path include_path {}
+    dict update params -use_abs_path use_abs_path -include_path include_path -include_sim include_sim {}
     # Check if VHDL 2008 is used in project
     set vhdl_2008 0
     if {[lsearch -exact [get_property FILE_TYPE [get_files -used_in synthesis -compile_order sources]] {VHDL 2008}] >= 0} {
         set vhdl_2008 1
     }
-    if {[lsearch -exact [get_property FILE_TYPE [get_files -used_in simulation -compile_order sources]] {VHDL 2008}] >= 0} {
-        set vhdl_2008 1
+    if { [string equal $include_sim True] } {
+        if {[lsearch -exact [get_property FILE_TYPE [get_files -used_in simulation -compile_order sources]] {VHDL 2008}] >= 0} {
+            set vhdl_2008 1
+        }
     }
 
     # Set GHDL analyze options to JSON file
@@ -31,12 +33,14 @@ proc ghdl-ls-prj-gen {out_path args} {
 
     # Get set of files used in synthesis
     set synth_list [get_files -compile_order sources -used_in synthesis]
-    # Get set of files used in simulation
-    set sim_list [get_files -compile_order sources -used_in simulation]
-    # And merge them
-    foreach el $sim_list {
-        if {[lsearch -exact $synth_list $el] < 0} {
-           lappend synth_list $el
+        if { [string equal $include_sim True] } {
+        # Get set of files used in simulation
+        set sim_list [get_files -compile_order sources -used_in simulation]
+        # And merge them
+        foreach el $sim_list {
+            if {[lsearch -exact $synth_list $el] < 0} {
+                lappend synth_list $el
+            }
         }
     }
 
